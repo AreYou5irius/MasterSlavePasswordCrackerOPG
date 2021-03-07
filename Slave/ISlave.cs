@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using Slave.model;
@@ -9,6 +10,14 @@ namespace Slave
 {
     public interface ISlave
     {
+        //private readonly HashAlgorithm _messageDigest;
+
+        //public Cracking()
+        //{
+        //    _messageDigest = new SHA1CryptoServiceProvider();
+
+        //}
+
         private static List<UserInfoClearText> result = new List<UserInfoClearText>(); //might be empty
 
         private IEnumerable<UserInfoClearText> CheckWordWithVariationsPartialResult(String dictionaryEntry, List<UserInfo> userInfos)
@@ -87,17 +96,18 @@ namespace Slave
 
         private IEnumerable<UserInfoClearText> CheckSingleWord(IEnumerable<UserInfo> userInfos, String possiblePassword)
         {
+
             char[] charArray = possiblePassword.ToCharArray();
             byte[] passwordAsBytes = Array.ConvertAll(charArray, PasswordFileHandler.GetConverter());
 
-            byte[] encryptedPassword = _messageDigest.ComputeHash(passwordAsBytes);
+            // byte[] encryptedPassword = _messageDigest.ComputeHash(passwordAsBytes); ------------------------indkommenter
             //string encryptedPasswordBase64 = System.Convert.ToBase64String(encryptedPassword);
 
             List<UserInfoClearText> results = new List<UserInfoClearText>();
 
             foreach (UserInfo userInfo in userInfos)
             {
-                if (CompareBytes(userInfo.EntryptedPassword, encryptedPassword))  //compares byte arrays
+                // if (CompareBytes(userInfo.EntryptedPassword, encryptedPassword))  //compares byte arrays  ------------------------indkommenter
                 {
                     results.Add(new UserInfoClearText(userInfo.Username, possiblePassword));
                     Console.WriteLine(userInfo.Username + " " + possiblePassword);
@@ -108,14 +118,6 @@ namespace Slave
 
         private static bool CompareBytes(IList<byte> firstArray, IList<byte> secondArray)
         {
-            //if (secondArray == null)
-            //{
-            //    throw new ArgumentNullException("firstArray");
-            //}
-            //if (secondArray == null)
-            //{
-            //    throw new ArgumentNullException("secondArray");
-            //}
             if (firstArray.Count != secondArray.Count)
             {
                 return false;
