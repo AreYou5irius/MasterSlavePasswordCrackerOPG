@@ -17,7 +17,7 @@ namespace Slave
 
         }
 
-        private IEnumerable<UserInfoClearText> CheckWordWithVariations(String dictionaryEntry, List<UserInfo> userInfos)
+        public IEnumerable<UserInfoClearText> CheckWordWithVariations(String dictionaryEntry, List<UserInfo> userInfos)
         {
             List<UserInfoClearText> result = new List<UserInfoClearText>(); //might be empty
 

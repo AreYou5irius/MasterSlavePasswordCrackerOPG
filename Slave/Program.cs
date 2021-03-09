@@ -24,22 +24,38 @@ namespace Slave
 
 
             sw.WriteLine("password");
-            //sw.WriteLine("chunk");
-            //clint need logic to Se video--------------------------------------!!!!
-            sw.WriteLine("stop");
-
-            List<string> data = new List<string>();
-
             while (!sr.EndOfStream)
             {
-                data.Add(sr.ReadLine());
+                passwordList.Add(sr.ReadLine());
 
             }
-
-            foreach (var word in data)
+            foreach (var word in passwordList)
             {
+                Cracking.CheckWordWithVariations(word, passwordList);
+
                 Console.WriteLine(word);
             }
+
+            sw.WriteLine("chunk");
+            while (!sr.EndOfStream)
+            {
+                chunkList.Add(sr.ReadLine());
+
+            }
+            foreach (var word in chunkList)
+            {
+                Cracking.CheckWordWithVariations(word, passwordList);
+
+                Console.WriteLine(word);
+            }
+
+            sw.WriteLine("stop");
+
+
+
+            //List<string> data = new List<string>();
+
+
 
             //string responce = sr.ReadLine();
 

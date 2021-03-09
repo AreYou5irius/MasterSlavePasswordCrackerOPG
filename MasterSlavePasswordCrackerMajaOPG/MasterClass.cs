@@ -5,6 +5,8 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualBasic.CompilerServices;
 using Slave.model;
 using Slave.utilities;
@@ -42,15 +44,15 @@ namespace Master
 
             Console.WriteLine("Server is listning on port: " + port); //her fortæller den at serveren lytter og på hvilken port den lytter
 
-
             AcceptClient(); //her acceptere den en client/slave(laver en forbindelse)
-
 
             var request = sr.ReadLine();  //den modtager en besked fra slave i consolen
 
 
             ServeClient(request); //giver beskeden videre til en metode der udfra beskeden vudere hvad den skal sende retur til slaven
 
+
+            //CheckSingleWord(); maja har tilføjet -----------det er denne der samler de crackede passwords dele
 
             CloseConnection(); //når den er færdig med at udfører arbejde lukker den forbindelsen til slaven
 
