@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Slave
+namespace Master
 {
-    class Slave1
+    public interface ISlave
     {
-
+        string PossiblePassword();
 
 
     }

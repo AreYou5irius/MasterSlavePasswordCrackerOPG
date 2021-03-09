@@ -16,6 +16,7 @@ namespace Slave
             _messageDigest = new SHA1CryptoServiceProvider();
 
         }
+
         private IEnumerable<UserInfoClearText> CheckWordWithVariations(String dictionaryEntry, List<UserInfo> userInfos)
         {
             List<UserInfoClearText> result = new List<UserInfoClearText>(); //might be empty

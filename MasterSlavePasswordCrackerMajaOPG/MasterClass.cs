@@ -6,6 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Microsoft.VisualBasic.CompilerServices;
+using Slave.model;
+using Slave.utilities;
+
 
 namespace Master
 {
@@ -13,7 +16,7 @@ namespace Master
     class MasterClass
     {
         private BlockingCollection<List<string>> chunks;
-        private List<string> passwords;
+        private List<UserInfo> passwords = new List<UserInfo>();
         private TcpClient connectionSocket;
         private TcpListener server;
         private Stream ns;
@@ -22,8 +25,9 @@ namespace Master
 
         public MasterClass()
         {
-            passwords = new List<string>();
-            ReadPassword("passwords.txt");
+            //passwords = new List<string>();
+            //ReadPassword("passwords.txt");
+            passwords = PasswordFileHandler.ReadPasswordFile("passwords.txt");
             CreateChunks();
             chunks.Take();
         }
@@ -54,17 +58,17 @@ namespace Master
 
 
 
-        private void ReadPassword(string filename)
-        {   //det er en god ide at lave et break point for at sikre den henter filen korrekt
-            var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read); //her laves en forbindelse til en fil hvor der åbnes og laves adgang.
-            using var fileStreamReader = new StreamReader(fileStream);
-            while (!fileStreamReader.EndOfStream) //så længe streamReaderen ikke har læst filen færdig så sendes linjer til passwords listen og når den er færdig lukkes forbindelsen 
-            {
-                passwords.Add(fileStreamReader.ReadLine());
-            }
-            fileStream.Close();
-            fileStreamReader.Close();
-        }
+        //private void ReadPassword(string filename)
+        //{   //det er en god ide at lave et break point for at sikre den henter filen korrekt
+        //    var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read); //her laves en forbindelse til en fil hvor der åbnes og laves adgang.
+        //    using var fileStreamReader = new StreamReader(fileStream);
+        //    while (!fileStreamReader.EndOfStream) //så længe streamReaderen ikke har læst filen færdig så sendes linjer til passwords listen og når den er færdig lukkes forbindelsen 
+        //    {
+        //        passwords.Add(fileStreamReader.ReadLine());
+        //    }
+        //    fileStream.Close();
+        //    fileStreamReader.Close();
+        //}
 
         private void CreateChunks()
         {
@@ -119,8 +123,6 @@ namespace Master
                 request = sr.ReadLine();
             }
 
-
-
         }
 
         //her sender den alle passwords i listen til client/slaven
@@ -129,7 +131,7 @@ namespace Master
             Console.WriteLine("sending passwords.......");
             foreach (var pass in passwords)
             {
-                sw.WriteLine(pass);
+                sw.WriteLine(pass.EntryptedPasswordBase64);
             }
 
             Console.WriteLine("finished sending passwords");

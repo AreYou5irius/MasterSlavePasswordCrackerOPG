@@ -24,7 +24,7 @@ namespace Slave
 
 
             sw.WriteLine("password");
-            sw.WriteLine("chunk");
+            //sw.WriteLine("chunk");
             //clint need logic to Se video--------------------------------------!!!!
             sw.WriteLine("stop");
 
