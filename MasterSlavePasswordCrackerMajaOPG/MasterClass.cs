@@ -44,20 +44,33 @@ namespace Master
 
             Console.WriteLine("Server is listning on port: " + port); //her fortæller den at serveren lytter og på hvilken port den lytter
 
-            AcceptClient(); //her acceptere den en client/slave(laver en forbindelse)
+            for (int i = 0; i <= 7; i++)
+            {
+                Thread slaves = new Thread(() =>
+                {
+                    AcceptClient(); //her acceptere den en client/slave(laver en forbindelse)
 
-            var request = sr.ReadLine();  //den modtager en besked fra slave i consolen
+                    var request = sr.ReadLine();  //den modtager en besked fra slave i consolen
+
+                    ServeClient(request); //giver beskeden videre til en metode der udfra beskeden vudere hvad den skal sende retur til slaven
+
+                });
 
 
-            ServeClient(request); //giver beskeden videre til en metode der udfra beskeden vudere hvad den skal sende retur til slaven
+            }
 
+            //-------------------------------------------Virker ikke--------------------------------------------------------
 
-            //CheckSingleWord(); maja har tilføjet -----------det er denne der samler de crackede passwords dele
+            var crackedPassword = sr.ReadLine(); //her modtager vi de crackede passwords fra slave
+
+            Console.WriteLine(crackedPassword);// her udskriver vi de crakede passwords til consol så vi kan se dem
+
+            //------------------------------------------------------------------------------------------------------------------
+
 
             CloseConnection(); //når den er færdig med at udfører arbejde lukker den forbindelsen til slaven
 
         }
-
 
 
         //private void ReadPassword(string filename)
@@ -133,7 +146,7 @@ namespace Master
             Console.WriteLine("sending passwords.......");
             foreach (var pass in passwords)
             {
-                sw.WriteLine(pass.EntryptedPasswordBase64);
+                sw.WriteLine(pass);
             }
 
             Console.WriteLine("finished sending passwords");

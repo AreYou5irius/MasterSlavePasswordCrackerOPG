@@ -9,7 +9,7 @@ namespace Slave
 {
     class Cracking
     {
-        private readonly HashAlgorithm _messageDigest;
+        private static HashAlgorithm _messageDigest;
 
         public Cracking()
         {
@@ -17,7 +17,7 @@ namespace Slave
 
         }
 
-        public IEnumerable<UserInfoClearText> CheckWordWithVariations(String dictionaryEntry, List<UserInfo> userInfos)
+        public static IEnumerable<UserInfoClearText> CheckWordWithVariations(String dictionaryEntry, List<UserInfo> userInfos)
         {
             List<UserInfoClearText> result = new List<UserInfoClearText>(); //might be empty
 
@@ -64,7 +64,7 @@ namespace Slave
             return result;
         }
 
-        private IEnumerable<UserInfoClearText> CheckSingleWord(IEnumerable<UserInfo> userInfos, String possiblePassword)
+        private static IEnumerable<UserInfoClearText> CheckSingleWord(IEnumerable<UserInfo> userInfos, String possiblePassword)
         {
             char[] charArray = possiblePassword.ToCharArray();
             byte[] passwordAsBytes = Array.ConvertAll(charArray, PasswordFileHandler.GetConverter());

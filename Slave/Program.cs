@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using Slave.model;
 
 namespace Slave
 {
@@ -12,7 +13,7 @@ namespace Slave
             //her laves en liste der skal bruges til at indeholde chunks
             List<string> chunkList = new List<string>();
             //her laves en liste der skal bruges til at indeholde passwords
-            List<string> passwordList = new List<string>();
+            List<UserInfo> passwordList = new List<UserInfo>();
 
             //clienten/slaven prøver at connecte til master via ip og port nr
             TcpClient clientSocket = new TcpClient("localhost", 6789);
@@ -26,15 +27,18 @@ namespace Slave
             sw.WriteLine("password");
             while (!sr.EndOfStream)
             {
-                passwordList.Add(sr.ReadLine());
+                List<string> stringPasswords = new List<string>();
+                stringPasswords.Add(sr.ReadLine());
+
+                //passwordList.Add(sr.ReadLine());
+
+                //Console.WriteLine(passwordList);
+                Console.WriteLine(stringPasswords);
+
+                //passwordList = stringPasswords.ConvertAll("string", UserInfo); //skal konvetere fra en string list til en userInfo list
 
             }
-            foreach (var word in passwordList)
-            {
-                Cracking.CheckWordWithVariations(word, passwordList);
 
-                Console.WriteLine(word);
-            }
 
             sw.WriteLine("chunk");
             while (!sr.EndOfStream)
@@ -44,7 +48,9 @@ namespace Slave
             }
             foreach (var word in chunkList)
             {
-                Cracking.CheckWordWithVariations(word, passwordList);
+                IEnumerable<UserInfoClearText> crackedPassword = Cracking.CheckWordWithVariations(word, passwordList);
+
+                sw.WriteLine(crackedPassword);
 
                 Console.WriteLine(word);
             }
@@ -52,35 +58,6 @@ namespace Slave
             sw.WriteLine("stop");
 
 
-
-            //List<string> data = new List<string>();
-
-
-
-            //string responce = sr.ReadLine();
-
-            //while (!sr.EndOfStream)
-            //{
-            //    //if (chunk)
-            //    //{
-            //    chunkList.Add(sr.ReadLine());
-            //    //}
-            //    //else if (password)
-            //    //{
-            //    passwordList.Add(sr.ReadLine());
-            //    //}
-            //    //else
-            //    //{
-            //    //Console.WriteLine("nothing was addet to any list");
-            //    //}
-            //}
-
-            //chunkList.Add(sr.ReadLine());
-            //passwordList.Add(sr.ReadLine());
-
-
-
-            //Console.WriteLine("responce from slave: " + responce);
             Console.ReadKey();
 
             ns.Close();
